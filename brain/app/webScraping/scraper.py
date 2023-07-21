@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup 
 import requests 
 from langchain.llms import OpenAI
-llm = OpenAI(openai_api_key="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")
 
 def scrape(url): 
     print("Scraping URL: " + url) 
