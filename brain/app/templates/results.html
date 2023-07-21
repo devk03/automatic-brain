@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Big Think Article's Outline</title>
+  </head>
+  <body>
+    <h1>Main Points:</h1>
+    <ul>
+      {% set points_list = points.split('***') %}
+      {% for point in points_list %}
+        {% if point.strip() != "" %}
+          <li>{{ point }}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </body>
+</html>
