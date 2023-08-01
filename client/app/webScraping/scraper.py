@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup 
 import requests 
 from langchain.llms import OpenAI
-
+from gptKey import key
 def scrape(url): 
     print("Scraping URL: " + url) 
     response = requests.get(url) 
@@ -9,7 +9,7 @@ def scrape(url):
     return bigThink(soup)
 
 def bigThink(soup): 
-    llm = OpenAI(openai_api_key="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", temperature=0.9)
+    llm = OpenAI(openai_api_key=key, temperature=0.9)
     paragraphs = soup.find_all('p', class_="") 
     passage = ""
     for paragraph in paragraphs:
