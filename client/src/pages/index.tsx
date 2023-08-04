@@ -2,11 +2,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import scraper from "./scraper";
 export default function Home() {
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/scrape")
-      .then((res: any) => res.json())
-      .then((data: any) => console.log(data));
-  }, []);
   return (
     <Fragment>
       <div>

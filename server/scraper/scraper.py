@@ -9,7 +9,7 @@ def scrapeBigThink (url) :
     return bigThink(soup)
 
 def bigThink(soup): 
-    llm = OpenAI(openai_api_key="key", temperature=0.9)
+    llm = OpenAI(openai_api_key="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", temperature=0.9)
     paragraphs = soup.find_all('p', class_="") 
     passage = ""
     for paragraph in paragraphs:
