@@ -38,3 +38,4 @@ server/scraper/gptKey.py
 
 # server dependencies
 server/venv
+server/__pycache__
