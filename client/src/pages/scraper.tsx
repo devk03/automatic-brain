@@ -55,5 +55,4 @@ const Scraper: React.FC = () => {
 
   );
 };
-
 export default Scraper;
