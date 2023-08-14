@@ -1,13 +1,14 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment } from "react";
 import Link from "next/link";
-import scraper from "./scraper";
+import styles from '../styles/Index.module.scss';
+
 export default function Home() {
   return (
     <Fragment>
-      <div>
-        <h1>Welcome to your automatic brain.</h1>
+      <div className={styles.container}>
+        <h1 className={styles.title}>Welcome to your automatic brain.</h1>
       </div>
-      <div>
+      <div className={styles.linkContainer}>
         <Link href="/scraper">Scrape</Link>
       </div>
     </Fragment>

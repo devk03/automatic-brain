@@ -3,11 +3,12 @@ import { useRouter } from "next/router";
 import ScrapedTextBox from "@/components/scrapedTextBox";
 
 const Scraper: React.FC = () => {
+  const portNumber = 5000
   const router = useRouter(); //declare router
   const [url, setUrl] = useState("");
   const [scrapedData, setScrapedData] = useState("");
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/scrape")
+    fetch(`http://127.0.0.1:${portNumber}/scrape`) // changed to backticks
       .then((res: any) => res.json())
       .then((data: any) => console.log(data));
   }, []);
@@ -17,7 +18,7 @@ const Scraper: React.FC = () => {
     const urlObject = { url };
 
     try {
-      const response = await fetch("http://localhost:8000/scrape", {
+      const response = await fetch(`http://127.0.0.1:${portNumber}/scrape`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

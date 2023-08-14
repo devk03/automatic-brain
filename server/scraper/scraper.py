@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup 
 from flask import jsonify
-from gptKey import KEY
+from .gptKey import OPENAI_API_KEY
 import requests 
 from langchain.llms import OpenAI
 def scrapeBigThink (url) : 
@@ -10,7 +10,7 @@ def scrapeBigThink (url) :
     return bigThink(soup)
 
 def bigThink(soup): 
-    llm = OpenAI(openai_api_key={KEY}, temperature=0.9)
+    llm = OpenAI(openai_api_key=OPENAI_API_KEY, temperature=0.9)
     paragraphs = soup.find_all('p', class_="") 
     passage = ""
     for paragraph in paragraphs:
