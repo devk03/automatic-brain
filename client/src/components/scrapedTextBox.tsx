@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
+import PORT_NUMBER from '../constants/constants';
 const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
-  const [textAreaContent, setTextAreaContent] = useState(""); // State variable to keep track of textarea content
+  const [textAreaContent, setTextAreaContent] = useState(props.text); // State variable to keep track of textarea content
 
   const paragraphs = props.text
     .split("***")
@@ -14,10 +14,26 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
     setTextAreaContent(event.target.value);
   };
 
-  const handleSubmit = () => {
-    console.log(textAreaContent);
-  };
-
+  const handleSubmit = async () => {
+    console.log(`listening on ${PORT_NUMBER}`,textAreaContent);
+    try {
+      const response = await fetch(`http://127.0.0.1:${PORT_NUMBER}/submitEntry`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: textAreaContent }),  // Send the textAreaContent as 'data'
+      });
+  
+      if (response.status === 204) {
+        console.log("Data submitted successfully.");
+      } else {
+        console.log("Failed to submit the data.");
+      }
+    } catch (err) {
+      console.error("Error:", err); // Log the error
+    }
+  };  
   return (
     <div>
       <textarea

@@ -10,6 +10,8 @@ export default function Home() {
       </div>
       <div className={styles.linkContainer}>
         <Link href="/scraper">Scrape</Link>
+        <br />
+        <Link href="/notes">Notes</Link>
       </div>
     </Fragment>
   );

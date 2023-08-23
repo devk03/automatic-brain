@@ -1,5 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 from scraper.scraper import scrapeBigThink
+from scraper.submit import insertData
+
+
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
@@ -25,6 +28,19 @@ def scrape():
 
     if scrapedData: return scrapedDataJSON
     else: return jsonify({ 'Response': 'Failed to receive the URL!' })
+
+@app.route("/submitEntry", methods=["POST"])
+def submitEntry():    
+    # Receive the json data from the frontend
+    data = request.get_json()
+    # Check if 'data' is in the received JSON before accessing it
+    print(data['data'])
+    if 'data' not in data:
+        return Response("No data provided!", status=400)  # 400 Bad Request
+    print("Attempting to submit this data:", data['data'])
+    insertData(data['data'])
+    return Response(status=204)  # 204 No Content
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
