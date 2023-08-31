@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import PORT_NUMBER from '../constants/constants';
+import PORT_NUMBER from "../constants/constants";
 const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
   const [textAreaContent, setTextAreaContent] = useState(props.text); // State variable to keep track of textarea content
+  const [author, setAuthor] = useState(""); // State variable to keep track of textarea content
 
   const paragraphs = props.text
     .split("***")
@@ -13,18 +14,26 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
   const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaContent(event.target.value);
   };
+  const handleAuthorChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setAuthor(event.target.value);
+  };
 
   const handleSubmit = async () => {
-    console.log(`listening on ${PORT_NUMBER}`,textAreaContent);
+    console.log(`listening on ${PORT_NUMBER}`, textAreaContent);
     try {
-      const response = await fetch(`http://127.0.0.1:${PORT_NUMBER}/submitEntry`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data: textAreaContent }),  // Send the textAreaContent as 'data'
-      });
-  
+      const response = await fetch(
+        `http://127.0.0.1:${PORT_NUMBER}/submitEntry`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ author: author, data: textAreaContent }), // Send the textAreaContent as 'data'
+        }
+      );
+
       if (response.status === 204) {
         console.log("Data submitted successfully.");
       } else {
@@ -33,9 +42,10 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
     } catch (err) {
       console.error("Error:", err); // Log the error
     }
-  };  
+  };
   return (
     <div>
+      <textarea defaultValue={""} onChange={handleAuthorChange} />
       <textarea
         defaultValue={formattedText}
         onChange={handleTextChange} // Update the state variable when the textarea content changes
@@ -48,6 +58,7 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
           borderRadius: "4px",
         }}
       />
+      <div>TAGS WILL GO HERE. https://dev.to/0shuvo0/lets-create-an-add-tags-input-with-react-js-d29</div>
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
