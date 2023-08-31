@@ -3,6 +3,7 @@ import PORT_NUMBER from "../constants/constants";
 const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
   const [textAreaContent, setTextAreaContent] = useState(props.text); // State variable to keep track of textarea content
   const [author, setAuthor] = useState(""); // State variable to keep track of textarea content
+  const [title, setTitle] = useState(""); // State variable to keep track of textarea content
 
   const paragraphs = props.text
     .split("***")
@@ -19,7 +20,9 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
   ) => {
     setAuthor(event.target.value);
   };
-
+  const handleTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTitle(event.target.value);
+  };
   const handleSubmit = async () => {
     console.log(`listening on ${PORT_NUMBER}`, textAreaContent);
     try {
@@ -30,7 +33,7 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ author: author, data: textAreaContent }), // Send the textAreaContent as 'data'
+          body: JSON.stringify({ author: author, title:title, text: textAreaContent }), // Send the textAreaContent as 'data'
         }
       );
 
@@ -46,6 +49,7 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
   return (
     <div>
       <textarea defaultValue={""} onChange={handleAuthorChange} />
+      <textarea defaultValue={""} onChange={handleTitleChange} />
       <textarea
         defaultValue={formattedText}
         onChange={handleTextChange} // Update the state variable when the textarea content changes
@@ -58,7 +62,10 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
           borderRadius: "4px",
         }}
       />
-      <div>TAGS WILL GO HERE. https://dev.to/0shuvo0/lets-create-an-add-tags-input-with-react-js-d29</div>
+      <div>
+        TAGS WILL GO HERE.
+        https://dev.to/0shuvo0/lets-create-an-add-tags-input-with-react-js-d29
+      </div>
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
