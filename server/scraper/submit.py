@@ -10,9 +10,9 @@ def insertData(data):
     table = supabase.table('entries')
     table.insert("hello").execute()
     entry_data = {
-        "data": {"title": "Sample Entry", "content": "This is a sample entry."},
-        "author": {"name": "Dev Kunjadia", "email": "dtkunjadia@gmail.com"},
-        "tags": ["tag1", "tag2", "tag3"]
+        "data": {"title": f"{data['title']}", "content": f"{data['text']}"},
+        "author": {"name": f"{data['author']}"},
+        "tags": data['tags']
     }
     # Insert data using the Supabase client
     data, count = supabase.table('entries').insert(entry_data).execute()

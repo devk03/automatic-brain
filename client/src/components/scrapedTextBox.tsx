@@ -1,30 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import TagsInput from "./SubmissionAttributes/customTags";
 import PORT_NUMBER from "../constants/constants";
-const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
-  const [textAreaContent, setTextAreaContent] = useState(props.text); // State variable to keep track of textarea content
-  const [author, setAuthor] = useState(""); // State variable to keep track of textarea content
-  const [title, setTitle] = useState(""); // State variable to keep track of textarea content
+import { create } from 'zustand';
 
-  const paragraphs = props.text
+interface ScrapedTextBoxProps {
+    text: string;
+}
+
+const entryStore = (set: any) => ({
+  author: "",
+  title: "",
+  text: "",
+  tags: [],
+  setAuthor: (author: string) => set({ author }),
+  setTitle: (title: string) => set({ title }),
+  setText: (text: string) => set({ text }),
+  setTags: (tags: string[]) => set({ tags }),
+});
+
+export const useEntryStore = create(entryStore);
+
+const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = ({ text }) => {
+  const {
+    author,
+    title,
+    text: storeText,
+    tags,
+    setAuthor,
+    setTitle,
+    setText
+  } = useEntryStore();
+  useEffect(() => {
+    // Set the initial text for each field in the Zustand store
+    if (!storeText) setText(text);
+    if (!author) setAuthor("");
+    if (!title) setTitle("");
+  }, []); 
+  const paragraphs = text
     .split("***")
-    .filter((paragraph) => paragraph.trim().length > 0) // Ignore empty paragraphs
+    .filter((paragraph) => paragraph.trim().length > 0)
     .map((paragraph) => `• ${paragraph}`);
+
   const formattedText = paragraphs.join("\n");
 
-  // Update the state variable whenever the textarea content changes
-  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTextAreaContent(event.target.value);
-  };
-  const handleAuthorChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setAuthor(event.target.value);
-  };
-  const handleTitleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTitle(event.target.value);
-  };
   const handleSubmit = async () => {
-    console.log(`listening on ${PORT_NUMBER}`, textAreaContent);
+    if (author.trim().length === 0 || title.trim().length === 0) {
+      console.log("Author and title are required.");
+      return;
+    }
+    console.log(`listening on ${PORT_NUMBER}`, storeText);
+
     try {
       const response = await fetch(
         `http://127.0.0.1:${PORT_NUMBER}/submitEntry`,
@@ -33,26 +58,36 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ author: author, title:title, text: textAreaContent }), // Send the textAreaContent as 'data'
+          body: JSON.stringify({ author, title, text: storeText, tags }),
         }
       );
 
-      if (response.status === 204) {
-        console.log("Data submitted successfully.");
-      } else {
-        console.log("Failed to submit the data.");
-      }
+      const logMessage = response.status === 204
+        ? "Data submitted successfully."
+        : "Failed to submit the data.";
+      console.log(logMessage);
     } catch (err) {
-      console.error("Error:", err); // Log the error
+      console.error("Error:", err);
     }
   };
+
   return (
     <div>
-      <textarea defaultValue={""} onChange={handleAuthorChange} />
-      <textarea defaultValue={""} onChange={handleTitleChange} />
+      <textarea 
+        placeholder="Author" 
+        value={author} 
+        onChange={(e) => setAuthor(e.target.value)} 
+      />
+
+      <textarea 
+        placeholder="Title" 
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)} 
+      />
+
       <textarea
-        defaultValue={formattedText}
-        onChange={handleTextChange} // Update the state variable when the textarea content changes
+        value={storeText || formattedText}
+        onChange={(e) => setText(e.target.value)}
         style={{
           width: "80%",
           minHeight: "200px",
@@ -62,10 +97,9 @@ const ScrapedTextBox: React.FC<ScrapedTextBoxProps> = (props) => {
           borderRadius: "4px",
         }}
       />
-      <div>
-        TAGS WILL GO HERE.
-        https://dev.to/0shuvo0/lets-create-an-add-tags-input-with-react-js-d29
-      </div>
+
+      <TagsInput />
+
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
