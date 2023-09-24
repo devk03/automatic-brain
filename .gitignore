@@ -34,7 +34,7 @@ client/*.tsbuildinfo
 client/next-env.d.ts
 
 # the gpt key
-server/scraper/gptKey.py
+server/gptKey.py
 
 # server dependencies
 server/venv
