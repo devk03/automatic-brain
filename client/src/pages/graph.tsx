@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NoteBox from "@/components/NoteNode/noteBox";
 import Draggable from "react-draggable";
 import styles from "@/styles/Graph.module.scss";
-import { Fragment } from "react";
-import { useEffect } from "react";
 import PORT_NUMBER from "../constants/constants";
-import { useState } from "react";
 
 export default function Graph() {
   const [data, setData] = useState(null);
+
   useEffect(() => {
     console.log("fetching data");
     const fetchData = async () => {
@@ -23,9 +21,9 @@ export default function Graph() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setData(data);
-        console.log(data)
+        const responseJson = await response.json(); // No need to JSON.parse(data)
+        setData(responseJson["data"]); // Set data directly
+        console.log(data); // Log the parsed data
       } catch (error) {
         console.error("Fetch error:", error);
       }
@@ -37,7 +35,7 @@ export default function Graph() {
     <>
       <Draggable>
         <div className={styles.box}>
-          <NoteBox />
+            <NoteBox />
         </div>
       </Draggable>
     </>
