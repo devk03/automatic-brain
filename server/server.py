@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, Response
 from scraper.scraper import scrapeBigThink
 from scraper.submit import insertData
-
-
+from graph.pullData import queryData
+from gptKey import OPENAI_API_KEY, SUPABASE_URL, SUPABASE_KEY
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
@@ -20,7 +20,7 @@ def scrape():
 
     url = data['url']
     #scrape the url
-    scrapedData = scrapeBigThink(url)
+    scrapedData = scrapeBigThink(url, OPENAI_API_KEY)
     #return the scraped data
     scrapedDataJSON = jsonify({ 'Response': 'Received the URL!',
                      'url': url,
@@ -38,9 +38,12 @@ def submitEntry():
     if 'text' not in data:
         return Response("No data provided!", status=400)  # 400 Bad Request
     # insertData(data['text'])
-    insertData(data)
+    insertData(data, SUPABASE_URL, SUPABASE_KEY)
     return Response(status=204)  # 204 Success
 
+@app.route('/get-graph', methods=['GET'])
+def get_data():
+    queryData(SUPABASE_URL, SUPABASE_KEY)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

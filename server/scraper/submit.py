@@ -1,12 +1,9 @@
 import os
 from supabase import create_client, Client
-from .gptKey import SUPABASE_URL
-from .gptKey import SUPABASE_KEY
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-def insertData(data):
+def insertData(data, SUPABASE_URL, SUPABASE_KEY):
     print("Inserting data into the database")
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
     table = supabase.table('entries')
     table.insert("hello").execute()
     entry_data = {

@@ -1,15 +1,14 @@
 from bs4 import BeautifulSoup 
 from flask import jsonify
-from .gptKey import OPENAI_API_KEY
 import requests 
 from langchain.llms import OpenAI
-def scrapeBigThink (url) : 
+def scrapeBigThink (url, OPENAI_API_KEY) : 
     print("Scraping URL: " + url) 
     response = requests.get(url) 
     soup = BeautifulSoup(response.content, 'html.parser') 
-    return bigThink(soup)
+    return bigThink(soup, OPENAI_API_KEY)
 
-def bigThink(soup): 
+def bigThink(soup, OPENAI_API_KEY): 
     llm = OpenAI(openai_api_key=OPENAI_API_KEY, temperature=0.9)
     paragraphs = soup.find_all('p', class_="") 
     passage = ""
