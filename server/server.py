@@ -34,6 +34,7 @@ def submitEntry():
     # Receive the json data from the frontend
     data = request.get_json()
     # Check if 'data' is in the received JSON before accessing it
+    print(data)
     if 'text' not in data:
         return Response("No data provided!", status=400)  # 400 Bad Request
     # insertData(data['text'])

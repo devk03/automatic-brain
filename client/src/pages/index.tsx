@@ -12,6 +12,8 @@ export default function Home() {
         <Link href="/scraper">Scrape</Link>
         <br />
         <Link href="/notes">Notes</Link>
+        <br />
+        <Link href="/graph">Graph</Link>
       </div>
     </Fragment>
   );
