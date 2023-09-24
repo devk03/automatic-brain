@@ -25,6 +25,7 @@ export default function Graph() {
         }
         const data = await response.json();
         setData(data);
+        console.log(data)
       } catch (error) {
         console.error("Fetch error:", error);
       }

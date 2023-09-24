@@ -43,14 +43,9 @@ def submitEntry():
 
 @app.route("/get-graph", methods=['GET'])
 def get_data():
-    # data = queryData(SUPABASE_URL, SUPABASE_KEY)
-    # print(data)
-    data = {
-        "key1": "value1",
-        "key2": "value2",
-        "key3": "value3"
-    }    
-    return jsonify(data)
-
+    data = queryData(SUPABASE_URL, SUPABASE_KEY)
+    print("monkey", type(data))
+    json_data = data.json()
+    return jsonify(json_data)
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
