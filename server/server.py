@@ -41,9 +41,16 @@ def submitEntry():
     insertData(data, SUPABASE_URL, SUPABASE_KEY)
     return Response(status=204)  # 204 Success
 
-@app.route('/get-graph', methods=['GET'])
+@app.route("/get-graph", methods=['GET'])
 def get_data():
-    queryData(SUPABASE_URL, SUPABASE_KEY)
+    # data = queryData(SUPABASE_URL, SUPABASE_KEY)
+    # print(data)
+    data = {
+        "key1": "value1",
+        "key2": "value2",
+        "key3": "value3"
+    }    
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
