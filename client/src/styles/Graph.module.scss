@@ -1,12 +1,5 @@
-.box {
-    position: absolute;
-    cursor: move;
-    color: rgb(255, 255, 255);
-    max-width: 215px;
-    border-radius: 5px;
-    padding: 1em;
-    margin: auto;
-    user-select: none;
-    background-color: #000000;
-  }
-  
+.react-flow__node-custom {
+  padding: 10px;
+  background-color: #556677;
+  color: white;
+}
