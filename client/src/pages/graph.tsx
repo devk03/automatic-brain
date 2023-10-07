@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import NoteBox from "@/components/NoteNode/noteBox";
+import NoteBox from "@/components/Nodes/NoteNode/noteBox";
 import Draggable from "react-draggable";
 import styles from "../styles/Graph.module.scss";
 import PORT_NUMBER from "../constants/constants";
